@@ -1,0 +1,131 @@
+databaseChangeLog:
+  - changeSet:
+      id: "createSequenceForCountriesTable"
+      author: "alextim"
+      changes:
+        - createSequence:
+            sequenceName: "COUNTRY_SEQ"
+
+  - changeSet:
+      id: "createTableCountries"
+      author: "alextim"
+      preConditions:
+        onFail: "MARK_RAN"
+        not:
+          tableExists:
+            tableName: "countries"
+      changes:
+        - createTable:
+            tableName: "countries"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+        - addDefaultValue:
+            tableName: countries
+            columnName: id
+            defaultValueComputed: nextval('country_seq')
+
+  - changeSet:
+      id: "insertCountries"
+      author: "alextim"
+      preConditions:
+        onFail: "MARK_RAN"
+        sqlCheck:
+          expectedResult: "0"
+          sql: "select count(*) from countries"
+      changes:
+        - insert:
+            tableName: "countries"
+            columns:
+              - column:
+                  name: "name"
+                  value: "Afghanistan"
+        - insert:
+            tableName: "countries"
+            columns:
+              - column:
+                  name: "name"
+                  value: "Albania"
+        - insert:
+            tableName: "countries"
+            columns:
+              - column:
+                  name: "name"
+                  value: "Ukraine"
+
+  - changeSet:
+      id: "createSequenceForPersonsTable"
+      author: "alextim"
+      changes:
+        - createSequence:
+            sequenceName: "PERSON_SEQ"
+
+  - changeSet:
+      id: "createTablePersons"
+      author: "alextim"
+      preConditions:
+        onFail: "MARK_RAN"
+        not:
+          tableExists:
+            tableName: "persons"
+      changes:
+        - createTable:
+            tableName: "persons"
+            columns:
+              - column:
+                  name: "id"
+                  type: "BIGINT"
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: "first_name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "middle_name"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "last_name"
+                  type: "VARCHAR(255)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "city"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "birth_date"
+                  type: "DATE"
+              - column:
+                  name: "phone"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "mobile_phone"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "email"
+                  type: "VARCHAR(255)"
+              - column:
+                  name: "country_id"
+                  type: "BIGINT"
+        - addDefaultValue:
+            tableName: countries
+            columnName: id
+            defaultValueComputed: nextval('person_seq')
+        - addForeignKeyConstraint:
+            baseTableName: "persons"
+            baseColumnNames: "country_id"
+            constraintName: "fk_person_country"
+            referencedTableName: "countries"
+            referencedColumnNames: "id"
+            onDelete: "CASCADE"
