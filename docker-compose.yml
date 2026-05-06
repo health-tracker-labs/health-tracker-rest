@@ -1,0 +1,17 @@
+services:
+    health-tracker-rest:
+      image: health-tracker/health-tracker-rest:latest
+      container_name: health-tracker-rest
+      depends_on:
+        - health-tracker-db
+      environment:
+        SPRING_PROFILES_ACTIVE: prod
+    health-tracker-db:
+      image: postgres:12
+      container_name: health-tracker-db
+      ports:
+        - "5432:5432"      
+      environment:
+        POSTGRES_USER: health-tracker
+        POSTGRES_PASSWORD: health-tracker
+        POSTGRES_DB: health-tracker-db
