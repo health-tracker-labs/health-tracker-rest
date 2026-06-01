@@ -1,6 +1,6 @@
 services:
     health-tracker-rest:
-      image: health-tracker/health-tracker-rest:latest
+      image: health-tracker/health-tracker-rest:${APP_VERSION}
       build:
         context: .
       container_name: health-tracker-rest

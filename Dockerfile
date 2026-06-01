@@ -13,7 +13,7 @@ RUN ./gradlew dependencies --no-daemon
 
 COPY src src
 
-RUN ./gradlew build -x test --no-daemon
+RUN ./gradlew build --no-daemon
 
 #deploy
 FROM eclipse-temurin:23-jre
