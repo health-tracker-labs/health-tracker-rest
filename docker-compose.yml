@@ -1,11 +1,16 @@
 services:
     health-tracker-rest:
       image: health-tracker/health-tracker-rest:latest
+      build:
+        context: .
       container_name: health-tracker-rest
+      ports:
+        - "8082:8083"
+      environment:
+        SERVER_PORT: 8083
+        SPRING_PROFILES_ACTIVE: prod
       depends_on:
         - health-tracker-db
-      environment:
-        SPRING_PROFILES_ACTIVE: prod
     health-tracker-db:
       image: postgres:12
       container_name: health-tracker-db
