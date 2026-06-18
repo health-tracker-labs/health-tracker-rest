@@ -1,4 +1,4 @@
-package com.alextim.health.rest;
+package com.alextim.health.tracker.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

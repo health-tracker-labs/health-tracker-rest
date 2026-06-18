@@ -1,0 +1,26 @@
+services:
+    health-tracker-rest:
+      image: health-tracker/health-tracker-rest:${APP_VERSION}
+      build:
+        context: .
+      container_name: health-tracker-rest
+      ports:
+        - "8082:8083"
+      environment:
+        SERVER_PORT: 8083
+        SPRING_PROFILES_ACTIVE: prod
+      depends_on:
+        - health-tracker-db
+    health-tracker-db:
+      image: postgres:12
+      container_name: health-tracker-db
+      ports:
+        - "5432:5432"      
+      environment:
+        POSTGRES_USER: health-tracker
+        POSTGRES_PASSWORD: health-tracker
+        POSTGRES_DB: health-tracker-db
+      volumes:
+        - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
